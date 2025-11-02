@@ -24,11 +24,11 @@ public class AmbulanceBookingHistory {
     private UUID driverId;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String, Double> pickupLocation;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String, Double> dropLocation;
 
     @Enumerated(EnumType.STRING)

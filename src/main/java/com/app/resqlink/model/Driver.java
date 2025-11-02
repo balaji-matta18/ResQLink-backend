@@ -44,7 +44,7 @@ public class Driver {
     private int numberOfRidesCompleted;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String, Double> gpsLocation; // e.g. { "latitude": 17.123, "longitude": 78.456 }
 
     @CreationTimestamp

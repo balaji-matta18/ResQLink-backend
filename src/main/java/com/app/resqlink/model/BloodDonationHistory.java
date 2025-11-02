@@ -29,7 +29,7 @@ public class BloodDonationHistory {
     private UUID receiverId;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String, Double> location;
 
     @Column(nullable = false)
