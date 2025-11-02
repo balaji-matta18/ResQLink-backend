@@ -22,7 +22,7 @@ public class AmbulanceLiveLocation {
     private AmbulanceBookingHistory booking;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String, Double> currentLocation;
 
     @CreationTimestamp

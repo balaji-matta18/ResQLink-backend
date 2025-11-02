@@ -49,7 +49,7 @@ public class User {
     private String homeAddress;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private Map<String, Double> gpsLocation; // Stored as JSON string
 
     @Column(nullable = false, updatable = false)

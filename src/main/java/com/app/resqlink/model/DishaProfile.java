@@ -17,9 +17,9 @@ public class DishaProfile {
     @Id
     private UUID userId;
 
-    // List of maps with "name" and "phone" keys, stored as JSONB
+    // List of maps with "name" and "phone" keys, stored as JSON
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private List<Map<String, String>> emergencyContacts;
 
     private String suspectImageUrl;
