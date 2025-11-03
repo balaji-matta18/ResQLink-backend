@@ -15,25 +15,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Step 2: Set up Java (Temurin JDK 25)
       - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'temurin'
 
+      # Step 3: Build the project using Maven
       - name: Build project
         run: |
           mvn clean package -DskipTests
 
+      # Step 4: Verify JAR and prepare deployment ZIP
       - name: Prepare deployment bundle
         run: |
           VERSION_LABEL="resqlink-docker-v${{ github.run_number }}"
+          echo "Listing target directory before zipping:"
+          ls -l target
           zip -r "${VERSION_LABEL}.zip" target/*.jar Dockerfile .ebextensions || true
           echo "VERSION_LABEL=${VERSION_LABEL}" >> $GITHUB_ENV
 
+      # Step 5: Deploy the ZIP to AWS Elastic Beanstalk
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
