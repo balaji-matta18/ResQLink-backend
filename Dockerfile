@@ -1,24 +1,15 @@
-# Stage 1: Build the application
-FROM eclipse-temurin:25-jdk as builder
-
-WORKDIR /app
-
-COPY . .
-
-
-RUN chmod +x mvnw
-
-
-RUN ./mvnw clean package -DskipTests
-
+# Use lightweight Java runtime image
 FROM eclipse-temurin:25-jre
 
+# Set working directory inside container
 WORKDIR /app
 
-COPY --from=builder /app/target/*.jar app.jar
+# Copy the pre-built Spring Boot jar from target/
+COPY target/*.jar app.jar
 
-ENV PORT=8080
+# Expose port expected by Beanstalk
 EXPOSE 8080
 
-# Run the app
-CMD ["java", "-jar", "app.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
