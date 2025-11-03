@@ -17,8 +17,8 @@ WORKDIR /app
 
 COPY --from=builder /app/target/*.jar app.jar
 
-ENV PORT=8080
-EXPOSE 8080
+ENV PORT=5000
+EXPOSE 5000
 
 # Run the app
 CMD ["java", "-jar", "app.jar"]
