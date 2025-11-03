@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "src/**"
+      - "pom.xml"
+      - "Dockerfile"
+      - ".github/workflows/deploy.yml"
 
 jobs:
   deploy:
@@ -19,14 +24,16 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Build project (if required)
+      - name: Build project
         run: |
-          chmod +x mvnw || true
-          ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
 
       - name: Prepare deployment bundle
         run: |
-          zip -r resqlink-docker.zip . -x "target/*" ".git/*" ".github/*"
+          VERSION_LABEL="resqlink-docker-v${{ github.run_number }}"
+          zip -r "${VERSION_LABEL}.zip" target/*.jar Dockerfile .ebextensions || true
+          echo "VERSION_LABEL=${VERSION_LABEL}" >> $GITHUB_ENV
 
       - name: Deploy to AWS Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
@@ -34,7 +41,8 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ResQLink-backend
-          environment_name: ResQLink-backend-env
+          environment_name: resqlink-backend-env
+          version_label: ${{ env.VERSION_LABEL }}
           region: ap-south-1
-          version_label: resqlink-docker-v${{ github.run_number }}
-          deployment_package: resqlink-docker.zip
+          deployment_package: ${{ env.VERSION_LABEL }}.zip
+          wait_for_deployment: true
